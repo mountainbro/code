@@ -1,0 +1,18 @@
+/* 默认light color */
+:root{
+  --text-color:#0d141e;
+  --text-color-dark:#858c96;
+  --text-color-more:#5d646e;
+  --border-color:#ebedf1;
+  --bg-color:#ffffff;
+  --bg-color-dark:#f6f7f9;
+
+}
+#layout.moon{
+  --text-color:#eef0f4;
+  --text-color-dark:#8a8c90;
+  --text-color-more:#b2b4b8;
+  --border-color:#ffffff0d;
+  --bg-color:#1f2022;
+  --bg-color-dark:#17181a;
+}

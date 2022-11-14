@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>clock canvas</title>
+    <style>
+      canvas {
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="clock" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#clock");
+      const bgColor = window.getComputedStyle(canvas)["background-color"];
+      const p = Math.PI;
+      const h = canvas.offsetHeight;
+      const w = canvas.offsetWidth;
+      let preTime = null;
+      const ctx = canvas.getContext("2d");
+      const drawLine = (
+        ctx,
+        { from, to, color = "gray", width = 10, rotate = 0 } = {}
+      ) => {
+        ctx.rotate(rotate);
+        ctx.beginPath();
+        ctx.lineCap = "round";
+        ctx.moveTo(0, from);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        console.log(color);
+        ctx.lineTo(0, to);
+        ctx.stroke();
+
+        ctx.restore();
+        ctx.save();
+      };
+      // 转移坐标原点
+      // 表盘
+      ctx.translate(w / 2, h / 2);
+      const r = (w / 20) * 9;
+      ctx.save();
+      // ctx.arc(0, 0, r, 0, p * 2);
+      // ctx.lineWidth = 10;
+      // ctx.strokeStyle = "gray";
+      // ctx.stroke();
+      for (let i = 0; i < 60; i++) {
+        const deg = ((2 * p) / 60) * i;
+        console.log("deg", deg);
+        if (i % 5 === 0) {
+          drawLine(ctx, {
+            from: (r / 20) * -19,
+            to: r * -1,
+            color: "red",
+            rotate: deg,
+          });
+        } else {
+          drawLine(ctx, {
+            from: (r / 20) * -19,
+            to: r * -1,
+            width: 8,
+            rotate: deg,
+          });
+        }
+        // ctx.rotate(p / 30);
+      }
+      ctx.save();
+      const getTime = () => {
+        const time = new Date();
+        return {
+          h: time.getHours() % 12,
+          m: time.getMinutes(),
+          s: time.getSeconds(),
+        };
+      };
+      const drawTime = (time, isClear) => {
+        if (!time) return;
+        const { h, m, s } = time;
+        const options = [
+          {
+            from: (r / 20) * 3,
+            to: (r / 20) * -18,
+            width: 2,
+            color: "red",
+            rotate: ((2 * p) / 60) * s,
+          },
+          {
+            from: (r / 20) * 3,
+            to: (r / 20) * -16,
+            width: 3,
+            rotate: ((2 * p) / 60) * m + ((2 * p) / 60 / 60) * s,
+          },
+          {
+            from: (r / 20) * 2,
+            to: (r / 20) * -13,
+            width: 5,
+            rotate:
+              ((2 * p) / 12) * h +
+              ((2 * p) / 60 / 60 / 60) * s +
+              (p / 60 / 60) * m,
+          },
+        ];
+        options.forEach((option) => {
+          if (isClear) {
+            option.color = bgColor;
+            option.width += 10;
+          } else {
+            preTime = { h, m, s };
+          }
+          drawLine(ctx, option);
+        });
+      };
+      // 时针分针秒针
+      setInterval(() => {
+        drawTime(preTime, true);
+        drawTime(getTime());
+        // 画一个中心的圆
+        ctx.beginPath();
+        ctx.fillStyle = "blue";
+        ctx.arc(0, 0, r / 30, 0, p * 2);
+        ctx.fill();
+      }, 1000);
+    </script>
+  </body>
+</html>

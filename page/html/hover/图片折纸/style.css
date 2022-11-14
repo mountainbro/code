@@ -1,0 +1,45 @@
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #30354f;
+}
+
+.box{
+  width: 300px;
+  height: 200px;
+  display: flex;
+  /* background-color: #fff; */
+  transition: all .4s ease-in;
+  transform: rotate(-25deg) skew(25deg);
+}
+.box:hover{
+  /* 是否旋转变形动画 */
+  /* transform: rotate(-25deg) skew(-25deg) translateY(-20px); */
+}
+.box span {
+  width: 25%;
+  height: 100%;
+  background-color: #fff;
+  background: url('http://static.moushiapp.com/v/202210281656645.webp');
+  background-size: cover;
+  background-position: calc(25% * var(--i));
+  display: block;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+}
+.box span:first-child{
+  border-left:3px solid #fff
+}
+.box span:last-child{
+  border-right:3px solid #fff
+}
+.box:hover span:nth-child(odd){
+  transform: skewY(25deg);
+  box-shadow: inset 20px 0 50px rgba(0,0,0,.5);
+}
+.box:hover span:nth-child(even){
+  transform: skewY(-25deg);
+  box-shadow: inset 20px 0 50px rgba(0,0,0,.5);
+}
